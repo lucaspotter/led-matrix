@@ -70,12 +70,18 @@ def nOutput():  # get random news from the bbc & nyt
     nyt = feedparser.parse('https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml')
 
     newsList = []
+    bbcLen = len(bbc.entries)
+    nytLen = len(nyt.entries)
+    print("nyt is " + str(nytLen) + " bbc is " + str(bbcLen) + " smallest is " + str(min(nytLen, bbcLen)))
 
-    for i in range(8):  # this breaks on occasion. may update in the future.
+    if min(nytLen, bbcLen) <= 0:
+        return "News error, try again later"
+
+    for i in range(min(nytLen, bbcLen)):  # oh hey. i fixed it.
         newsList.append(bbc.entries[i].title)
         newsList.append(nyt.entries[i].title)
 
-    output = newsList[random.randint(0, 15)]
+    output = newsList[random.randint(0, min(nytLen, bbcLen)*2-1)]
 
     print(output)
     return output
